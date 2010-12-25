@@ -1,0 +1,47 @@
+I wanted to share a script I wrote and use daily to import
+transactions from SMS messages. My bank does not yet offer the
+OFX export but it does have SMS banking. If you are geeky enough
+to understand some shell scripting follow on.
+
+The scripts are distributed under Apache Licence 2. Feel free to
+modify them to suite your needs if you follow the terms of the
+license.
+
+The scripts are specially crafted to work with Russian Sberbank
+but one can modify it to support other message formats as well.
+If you are not a client of Sberbank but still have an SMS banking
+available refer to the end of the post on rough instructions how
+to modify scripts to understand your bank's messages.
+
+Pre-requisites:
+- A Sberbank account with SMS banking enabled;
+- An iPhone synced & backed up to the Mac where you'll execute the
+scripts. Backups must not be encrypted. Naturally, SMSes should
+be delivered to this iPhone;
+- An iBank (or other app that supports OFX) installation;
+- Knowing what a Terminal is in Mac OS X. Or shell in...
+
+How to use: The zip file attached contains a shell (main) and an
+AWK script (generates an OFX file). Once unpacked launch Terminal
+and execute the script with the following command: CODE: SELECT
+ALL cd ibank-importsms-ru-sberbank sh sberbank.sh > sberbank.ofx
+
+Then switch into iBank and do a normal OFX import (File > Import)
+for the generated sberbank.ofx file. Done.
+
+Ok, now what if Sberbank is not your bank.
+
+The solution is split in two parts — finding the SMS messages and
+converting the machine-generated text into an OFX document.
+
+The first part is done by an ".sh" script and the only thing you
+may need to modify there is the phone number the bank uses to
+send you messages. Open a text editor and modify line #27 — use
+the correct number instead of "900". Do not use any hyphens or
+punctuation, write only digits.
+
+The second part (an ".awk" file) requires some knowledge of AWK.
+You can find decent articles about this language on
+the web and the script is well documented. You will need to write
+a pattern matcher (usualy column 5 of input) and call a
+transaction function to output a transaction XML block.
